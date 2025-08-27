@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Fonctionnaire; 
+use App\Models\Fonctionnaire;
 
 class FonctionnaireController extends Controller
 {
@@ -38,7 +38,7 @@ class FonctionnaireController extends Controller
         Fonctionnaire::create($request->all());
 
         return redirect()->route('fonctionnaires.index')
-                         ->with('success', 'تمت إضافة الموظف بنجاح'); 
+            ->with('success', 'تمت إضافة الموظف بنجاح');
     }
 
     /**
@@ -54,6 +54,7 @@ class FonctionnaireController extends Controller
      */
     public function edit(string $id)
     {
+        $fonctionnaire = Fonctionnaire::findOrFail($id);
         return view('fonctionnaires.edit', compact('fonctionnaire'));
     }
 
@@ -68,10 +69,10 @@ class FonctionnaireController extends Controller
             'phone' => 'required',
             'matricule' => 'required',
         ]);
-           $fonctionnaire->update($request->all());
+        $fonctionnaire->update($request->all());
 
         return redirect()->route('fonctionnaires.index')
-                         ->with('success', 'تم تعديل الموظف بنجاح');
+            ->with('success', 'تم تعديل الموظف بنجاح');
     }
 
     /**
@@ -79,8 +80,8 @@ class FonctionnaireController extends Controller
      */
     public function destroy(Fonctionnaire $fonctionnaire)
     {
-         $fonctionnaire->delete();
+        $fonctionnaire->delete();
         return redirect()->route('fonctionnaires.index')
-                         ->with('success', 'تم حذف الموظف بنجاح');
+            ->with('success', 'تم حذف الموظف بنجاح');
     }
 }
