@@ -29,7 +29,7 @@
     </div>
 
     <div class="flex justify-end gap-2">
-        <a href="{{ route('fonctionnaires.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded">إلغاء</a>
+        <a href="{{ route('admin.fonctionnaires.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded">إلغاء</a>
         <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">حفظ</button>
     </div>
 </div>

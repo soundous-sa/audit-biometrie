@@ -14,7 +14,7 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('fonctionnaires.index')" :active="request()->routeIs('fonctionnaires.index')">
+                    <x-nav-link :href="route('admin.fonctionnaires.index')" :active="request()->routeIs('admin.fonctionnaires.index')">
                         {{ __('الموظفين') }}
                     </x-nav-link>
                 </div>
@@ -38,7 +38,7 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('fonctionnaires.index')" :active="request()->routeIs('fonctionnaires.index')">
+            <x-responsive-nav-link :href="route('admin.fonctionnaires.index')" :active="request()->routeIs('admin.fonctionnaires.index')">
                 {{ __('الموظفين') }}
             </x-responsive-nav-link>
         </div>

@@ -13,7 +13,7 @@ class FonctionnaireController extends Controller
     public function index()
     {
         $fonctionnaires = Fonctionnaire::all();
-        return view('fonctionnaires.index', compact('fonctionnaires'));
+        return view('admin.fonctionnaires.index', compact('fonctionnaires'));
     }
 
     /**
@@ -21,7 +21,7 @@ class FonctionnaireController extends Controller
      */
     public function create()
     {
-        return view('fonctionnaires.create');
+        return view('admin.fonctionnaires.create');
     }
 
     /**
@@ -37,7 +37,7 @@ class FonctionnaireController extends Controller
         ]);
         Fonctionnaire::create($request->all());
 
-        return redirect()->route('fonctionnaires.index')
+        return redirect()->route('admin.fonctionnaires.index')
             ->with('success', 'تمت إضافة الموظف بنجاح');
     }
 
@@ -55,7 +55,7 @@ class FonctionnaireController extends Controller
     public function edit(string $id)
     {
         $fonctionnaire = Fonctionnaire::findOrFail($id);
-        return view('fonctionnaires.edit', compact('fonctionnaire'));
+        return view('admin.fonctionnaires.edit', compact('fonctionnaire'));
     }
 
     /**
@@ -71,7 +71,7 @@ class FonctionnaireController extends Controller
         ]);
         $fonctionnaire->update($request->all());
 
-        return redirect()->route('fonctionnaires.index')
+        return redirect()->route('admin.fonctionnaires.index')
             ->with('success', 'تم تعديل الموظف بنجاح');
     }
 
@@ -81,7 +81,7 @@ class FonctionnaireController extends Controller
     public function destroy(Fonctionnaire $fonctionnaire)
     {
         $fonctionnaire->delete();
-        return redirect()->route('fonctionnaires.index')
+        return redirect()->route('admin.fonctionnaires.index')
             ->with('success', 'تم حذف الموظف بنجاح');
     }
 }

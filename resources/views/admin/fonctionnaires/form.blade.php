@@ -1,4 +1,4 @@
-<form action="{{ isset($fonctionnaire) ? route('fonctionnaires.update', $fonctionnaire->id) : route('fonctionnaires.store') }}" method="POST" class="space-y-4">
+<form action="{{ isset($fonctionnaire) ? route('admin.fonctionnaires.update', $fonctionnaire->id) : route('admin.fonctionnaires.store') }}" method="POST" class="space-y-4">
     @csrf
     @if(isset($fonctionnaire))
         @method('PUT')

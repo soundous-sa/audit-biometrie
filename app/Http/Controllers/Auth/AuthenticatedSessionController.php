@@ -12,42 +12,53 @@ use Illuminate\View\View;
 class AuthenticatedSessionController extends Controller
 {
     /**
-     * Display the login view.
+     * Affiche la page de login.
      */
     public function create(): View
     {
-        return view('auth.login');
+        return view('auth.login'); // resources/views/auth/login.blade.php
     }
 
     /**
-     * Handle an incoming authentication request.
+     * Traite la requête de connexion.
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        $request->authenticate();
-
+        $request->authenticate(); // Breeze / Jetstream : vérifie email/password
         $request->session()->regenerate();
 
-       $user = Auth::user(); // récupère l'utilisateur connecté
+        $user = Auth::user(); // utilisateur connecté
 
-    if ($user->role === 'admin') {
-        return redirect()->route('admin.dashboard');
-    }
+        // Redirection selon le rôle
+        if ($user->role === 'admin') {
+            return redirect()->route('dashboard');
+        }
 
-    return redirect()->route('user.dashboard');
+        if ($user->role === 'user') {
+            return redirect()->route('dashboard');
+        }
+
+        // Si le rôle n'est pas défini ou incorrect, déconnexion et message
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('login')->withErrors([
+            'role' => 'Votre compte n’a pas de rôle valide. Contactez l’administrateur.',
+        ]);
     }
 
     /**
-     * Destroy an authenticated session.
+     * Déconnecte l’utilisateur.
      */
     public function destroy(Request $request): RedirectResponse
     {
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();
-
+        
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect()->route('login'); // retour à la page login après logout
     }
 }

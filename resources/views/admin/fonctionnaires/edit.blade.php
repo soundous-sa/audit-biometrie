@@ -6,6 +6,6 @@
 
     <!-- Ici on passe la variable au form -->
      <!-- hello this is just a test from edit.blade.php author : abdelmouniem -->
-    @include('fonctionnaires.form', ['fonctionnaire' => $fonctionnaire])
+    @include('admin.fonctionnaires.form', ['fonctionnaire' => $fonctionnaire])
 </div>
 @endsection

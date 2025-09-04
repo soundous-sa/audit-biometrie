@@ -17,7 +17,7 @@
 <div class="container mx-auto p-6">
     <h2 class="text-3xl font-bold mb-6 text-gray-700">قائمة الموظفين</h2>
 
-    <a href="{{ route('fonctionnaires.create') }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mb-4 inline-block">إضافة موظف جديد</a>
+    <a href="{{ route('admin.fonctionnaires.create') }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mb-4 inline-block">إضافة موظف جديد</a>
 
     <div class="overflow-x-auto bg-white shadow-md rounded">
         <table class="min-w-full border-collapse">
@@ -38,8 +38,8 @@
                     <td class="py-2 px-4 border">{{ $f->phone }}</td>
                     <td class="py-2 px-4 border">{{ $f->matricule }}</td>
                     <td class="py-2 px-4 border flex space-x-2 justify-end">
-                        <a href="{{ route('fonctionnaires.edit', $f->id) }}" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-3 rounded">تعديل</a>
-                        <form action="{{ route('fonctionnaires.destroy', $f->id) }}" method="POST" onsubmit="return confirm('هل متأكد من الحذف؟');">
+                        <a href="{{ route('admin.fonctionnaires.edit', $f->id) }}" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-3 rounded">تعديل</a>
+                        <form action="{{ route('admin.fonctionnaires.destroy', $f->id) }}" method="POST" onsubmit="return confirm('هل متأكد من الحذف؟');">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded">حذف</button>

@@ -2,7 +2,7 @@
     <div class="max-w-6xl mx-auto p-6 text-right">
         <div class="flex justify-between items-center mb-4">
             <h1 class="text-2xl font-bold">إدارة المستخدمين</h1>
-            <a href="{{ route('users.create') }}"
+            <a href="{{ route('admin.users.create') }}"
                class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
                 إضافة مستخدم جديد
             </a>
@@ -28,11 +28,11 @@
                         {{ $user->role === 'admin' ? 'مدير' : 'مستخدم' }}
                     </td>
                     <td class="px-4 py-2 border flex justify-end gap-2">
-                        <a href="{{ route('users.edit', $user) }}"
+                        <a href="{{ route('admin.users.edit', $user) }}"
                            class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600">
                             تعديل
                         </a>
-                        <form action="{{ route('users.destroy', $user) }}" method="POST"
+                        <form action="{{ route('admin.users.destroy', $user) }}" method="POST"
                               onsubmit="return confirm('هل أنت متأكد من الحذف؟')">
                             @csrf
                             @method('DELETE')
