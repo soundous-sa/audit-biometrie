@@ -5,15 +5,11 @@
     @endif
 
     <div>
-        <label class="block text-gray-700 font-bold mb-1">الإسم</label>
-        <input type="text" name="firstName" value="{{ $fonctionnaire->firstName ?? '' }}" class="w-full border rounded px-3 py-2" required>
+        <label class="block text-gray-700 font-bold mb-1">الإسم الكامل</label>
+        <input type="text" name="full_name" value="{{ $fonctionnaire->full_name ?? '' }}" class="w-full border rounded px-3 py-2" required>
     </div>
 
-    <div>
-        <label class="block text-gray-700 font-bold mb-1">النسب</label>
-        <input type="text" name="lastName" value="{{ $fonctionnaire->lastName ?? '' }}" class="w-full border rounded px-3 py-2" required>
-    </div>
-
+   
     <div>
         <label class="block text-gray-700 font-bold mb-1">الهاتف</label>
         <input type="text" name="phone" value="{{ $fonctionnaire->phone ?? '' }}" class="w-full border rounded px-3 py-2">

@@ -30,8 +30,7 @@ class FonctionnaireController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'firstName' => 'required',
-            'lastName' => 'required',
+            'full_name' => 'required',
             'phone' => 'required',
             'matricule' => 'required',
         ]);
@@ -64,8 +63,7 @@ class FonctionnaireController extends Controller
     public function update(Request $request, Fonctionnaire $fonctionnaire)
     {
         $request->validate([
-            'firstName' => 'required',
-            'lastName' => 'required',
+            'full_name' => 'required',
             'phone' => 'required',
             'matricule' => 'required',
         ]);

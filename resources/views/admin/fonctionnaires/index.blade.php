@@ -23,18 +23,16 @@
         <table class="min-w-full border-collapse">
             <thead class="bg-blue-500 text-white">
                 <tr>
-                    <th class="py-2 px-4 border">الإسم</th>
-                    <th class="py-2 px-4 border">النسب</th>
+                    <th class="py-2 px-4 border">الإسم الكامل</th>
                     <th class="py-2 px-4 border">الهاتف</th>
                     <th class="py-2 px-4 border">رقم التسجيل</th>
-                    <th class="py-2 px-4 border">أفعال</th>
+                    <th class="py-2 px-4 border"></th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($fonctionnaires as $f)
                 <tr class="hover:bg-gray-100 border-b">
-                    <td class="py-2 px-4 border">{{ $f->firstName }}</td>
-                    <td class="py-2 px-4 border">{{ $f->lastName }}</td>
+                    <td class="py-2 px-4 border">{{ $f->full_name }}</td>
                     <td class="py-2 px-4 border">{{ $f->phone }}</td>
                     <td class="py-2 px-4 border">{{ $f->matricule }}</td>
                     <td class="py-2 px-4 border flex space-x-2 justify-end">

@@ -6,6 +6,8 @@ use App\Http\Controllers\FonctionnaireController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\AuditController;
+use App\Http\Controllers\EtablissementsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,30 +19,7 @@ use Illuminate\Support\Facades\Auth;
 // Redirection automatique depuis "/" selon le rôle
 // -----------------------------
 Route::get('/', function () {
-    if (!Auth::check()) {
-        // Non connecté → login
-        return redirect()->route('login');
-    }
-
-    $user = Auth::user();
-
-    /* Redirection selon le rôle
-    if ($user->role === 'admin') {
-        return redirect()->route('admin.dashboard');
-    }*/
-
-   /* if ($user->role === 'user') {
-        return redirect()->route('user.dashboard');
-    }*/
-
-    // Si rôle non défini → déconnexion
-    Auth::logout();
-    session()->invalidate();
-    session()->regenerateToken();
-
-    return redirect()->route('login')->withErrors([
-        'role' => 'Votre compte n’a pas de rôle valide. Contactez l’administrateur.',
-    ]);
+    return redirect()->route('dashboard');
 })->name('home');
 
 // -----------------------------
@@ -59,9 +38,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     // ✅ Dashboard commun (admin + user)
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [AuditController::class, 'dashboard'])->name('dashboard');
+    Route::get('/formulaire', [EtablissementsController::class, 'create'])->name('formulaire.create');
 });
 
 // -----------------------------
@@ -81,15 +59,18 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 // -----------------------------
 // Routes user
 // -----------------------------
-Route::middleware(['auth', 'user'])->prefix('user')->name('user.')->group(function () {
-   /* Route::get('/dashboard', function () {
+Route::middleware(['auth', 'user'])->prefix('audits')->group(function () {
+    /* Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('user.dashboard');*/
 
     // Routes spécifiques aux users
+    Route::get('/create', [AuditController::class, 'create'])->name('audits.create');
+    Route::post('/store', [AuditController::class, 'store'])->name('audits.store');
+    Route::resource('audits', AuditController::class);
 });
 
 // -----------------------------
 // Routes auth complémentaires (mot de passe, inscription, etc.)
 // -----------------------------
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

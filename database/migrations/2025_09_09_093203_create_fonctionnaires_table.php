@@ -13,14 +13,12 @@ return new class extends Migration
     {
         Schema::create('fonctionnaires', function (Blueprint $table) {
             $table->id();
-            $table->string('firstName');
-            $table->string('lastName');
+            $table->string('full_name');
             $table->string('phone');
-            $table->string('matricule')->unique();
+            $table->string('matricule')->unique(); // Matricule unique
             $table->timestamps();
         });
     }
-
 
     /**
      * Reverse the migrations.

@@ -13,8 +13,7 @@ return new class extends Migration
     {
         Schema::create('etablissements', function (Blueprint $table) {
             $table->id();
-             $table->string('libele'); //  les Nom des établissements
-            $table->timestamps();
+             $table->string('libelle'); //  les Nom des établissements
         });
     }
 

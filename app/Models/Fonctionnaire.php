@@ -10,8 +10,7 @@ class Fonctionnaire extends Model
     use HasFactory;
 
     protected $fillable = [
-        'firstName',
-        'lastName',
+        'full_name',
         'phone',
         'matricule'
     ];

@@ -14,11 +14,11 @@ class EtablissementsSeeder extends Seeder
     public function run(): void
     {
         DB::table('etablissements')->insert([
-            ['libele' => 'Prison Centrale Rabat'],
-            ['libele' => 'Prison Locale Casablanca'],
-            ['libele' => 'Prison Locale Kénitra'],
-            ['libele' => 'Prison Oujda'],
-            ['libele' => 'Prison Marrakech'],
+            ['libelle' => 'Prison Centrale Rabat'],
+            ['libelle' => 'Prison Locale Casablanca'],
+            ['libelle' => 'Prison Locale Kénitra'],
+            ['libelle' => 'Prison Oujda'],
+            ['libelle' => 'Prison Marrakech'],
         ]);
     }
 }
