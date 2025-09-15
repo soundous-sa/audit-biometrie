@@ -11,12 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('fonctionnaire', function (Blueprint $table) {
-            $table->id();
-            $table->string('full_name');
-            $table->string('phone');
-            $table->string('matricule')->unique(); // Matricule unique
-            $table->timestamps();
+        Schema::table('fonctionnaires', function (Blueprint $table) {
+            $table->boolean('is_deleted')->default(false);
         });
     }
 
@@ -25,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('fonctionnaires');
+        Schema::table('fonctionnaires', function (Blueprint $table) {
+            $table->dropColumn('is_deleted');
+        });
     }
 };

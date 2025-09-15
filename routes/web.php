@@ -53,6 +53,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     // CRUD admin
     Route::resource('fonctionnaires', FonctionnaireController::class);
     Route::resource('users', UserController::class);
+    
 });
 
 
@@ -67,7 +68,11 @@ Route::middleware(['auth', 'user'])->prefix('audits')->group(function () {
     // Routes spécifiques aux users
     Route::get('/create', [AuditController::class, 'create'])->name('audits.create');
     Route::post('/store', [AuditController::class, 'store'])->name('audits.store');
-    Route::resource('audits', AuditController::class);
+    Route::resource('audits', AuditController::class)->except(['show']);
+
+    Route::get('/audits/export-form', [AuditController::class, 'showExportForm'])->name('audits.exportForm');
+    Route::post('/audits/export-form', [AuditController::class, 'filter'])->name('audits.filter');
+    Route::get('/audits/export', [AuditController::class, 'export'])->name('audits.export');
 });
 
 // -----------------------------

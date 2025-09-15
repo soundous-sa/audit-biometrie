@@ -9,13 +9,13 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+    public function up()
     {
-        Schema::create('fonctionnaire', function (Blueprint $table) {
+        
+        Schema::create('audit_fonctionnaire', function (Blueprint $table) {
             $table->id();
-            $table->string('full_name');
-            $table->string('phone');
-            $table->string('matricule')->unique(); // Matricule unique
+            $table->foreignId('audit_id')->constrained();
+            $table->foreignId('fonctionnaire_id')->constrained();
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('fonctionnaires');
+        Schema::dropIfExists('audit_fonctionnaire');
     }
 };

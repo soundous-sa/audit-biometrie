@@ -29,7 +29,16 @@
                 @forelse($audits as $audit)
                 <tr class="hover:bg-gray-100 border-b">
                     <td class="py-2 px-4 border">{{ $audit->etablissement->libelle ?? '—' }}</td>
-                    <td class="py-2 px-4 border">{{ $audit->fonctionnaire->full_name ?? '—' }}</td>
+                    
+                    {{-- Affichage Many-to-Many --}}
+                    <td class="py-2 px-4 border">
+                        @if($audit->fonctionnaires->isNotEmpty())
+                            {{ $audit->fonctionnaires->pluck('full_name')->join(', ') }}
+                        @else
+                            —
+                        @endif
+                    </td>
+                    
                     <td class="py-2 px-4 border">{{ $audit->date_audit }}</td>
                     <td class="py-2 px-4 border">{{ $audit->nb_detenus }}</td>
                     <td class="py-2 px-4 border">{{ $audit->nb_edited_fingerprints }}</td>
@@ -55,6 +64,5 @@
         </table>
     </div>
 </div>
-
 
 @endsection
