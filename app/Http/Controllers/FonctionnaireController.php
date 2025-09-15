@@ -12,7 +12,7 @@ class FonctionnaireController extends Controller
      */
     public function index()
     {
-        $fonctionnaires = Fonctionnaire::all();
+        $fonctionnaires = Fonctionnaire::where('is_deleted', false)->get();
         return view('admin.fonctionnaires.index', compact('fonctionnaires'));
     }
 
@@ -76,10 +76,20 @@ class FonctionnaireController extends Controller
     /**
      * حذف
      */
-    public function destroy(Fonctionnaire $fonctionnaire)
+  /*  public function destroy(Fonctionnaire $fonctionnaire)
     {
-        $fonctionnaire->delete();
+        $fonctionnaire->update(['is_deleted' => true]);
         return redirect()->route('admin.fonctionnaires.index')
             ->with('success', 'تم حذف الموظف بنجاح');
-    }
+    }*/
+         public function destroy($id)
+{
+    $fonctionnaire = Fonctionnaire::findOrFail($id);
+    $fonctionnaire->is_deleted = true; // تعيين كأنه محذوف
+    $fonctionnaire->save();
+
+    return redirect()->route('admin.fonctionnaires.index')
+                     ->with('success', 'تم الحذف بنجاح');
+}
+
 }

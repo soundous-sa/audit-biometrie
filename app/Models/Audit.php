@@ -32,4 +32,15 @@ class Audit extends Model
     {
         return $this->belongsTo(Fonctionnaire::class, 'fonct_id');
     }
+    
+    // relation Many-to-Many
+    public function fonctionnaires()
+    {
+        return $this->belongsToMany(
+            Fonctionnaire::class,
+            'audit_fonctionnaire',   // nom de la table pivot
+           // 'audit_id',              // clé locale dans la pivot
+            //'fonctionnaire_id'       // clé étrangère cible dans la pivot
+        )->withTimestamps();
+    }
 }
