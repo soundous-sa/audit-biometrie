@@ -1,61 +1,162 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<h1 align="center">🚀 Audit Biometrie – Laravel Application</h1>
+<p align="center"><strong>Gestion des opérations d'audit et de mise à jour des empreintes digitales (Biométrie)</strong></p>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+---
 
-## About Laravel
+## ✨ Sommaire
+1. Vue d'ensemble
+2. Fonctionnalités principales
+3. Architecture & Modèles
+4. Prérequis
+5. Installation & Démarrage (Windows & WSL)
+6. Commandes utiles
+7. Flux de travail : Création & Édition d'un audit
+8. Sélecteur multi-employés (Alpine.js)
+9. Export / Filtrage des audits
+10. Structure des tables (résumé)
+11. Dépannage (Troubleshooting)
+12. Roadmap / Améliorations futures
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 1. 🧭 Vue d'ensemble
+Application Laravel permettant :
+- La création et le suivi d'audits de mise à jour biométrique.
+- L'association de plusieurs fonctionnaires (agents) à chaque audit.
+- Le filtrage et l'export (Excel) des audits.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 2. 🔑 Fonctionnalités principales
+- Authentification Laravel standard.
+- Gestion des établissements (sélection dans le formulaire d'audit).
+- Relations Eloquent : `Audit` ↔ `Fonctionnaire` (Many-to-Many).
+- Sélecteur dynamique multi-fonctionnaires (Alpine.js) avec pré-remplissage en mode édition.
+- Validation côté serveur (Requests) + messages d'erreurs.
+- Export des audits filtrés (période / établissement).
 
-## Learning Laravel
+## 3. 🧱 Architecture & Modèles
+Modèles principaux :
+- `User` : utilisateur authentifié (créateur d'audits).
+- `Audit` : représente une opération (champs : etab_id, date_audit, compteurs numériques...).
+- `Fonctionnaire` : agent (full_name, phone, matricule, is_deleted).
+- Pivot : `audit_fonctionnaire` (audit_id, fonctionnaire_id).
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Relations :
+```php
+Audit::belongsTo(Etablissements::class, 'etab_id');
+Audit::belongsToMany(Fonctionnaire::class, 'audit_fonctionnaire');
+Fonctionnaire::belongsToMany(Audit::class, 'audit_fonctionnaire');
+```
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## 4. ✅ Prérequis
+- PHP 8.2+ (project runs on 8.4 currently).
+- Composer
+- Node.js 18+ (pour Vite / build assets)
+- SQLite (fichier `database/database.sqlite`) ou MySQL (adapter `.env`).
+- Extension PHP : pdo, mbstring, openssl, tokenizer, ctype, json, xml.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## 5. ⚙️ Installation & Démarrage
+### Cloner & installer
+```bash
+git clone <repo-url>
+cd audit-biometrie
+composer install
+npm install
+```
 
-## Laravel Sponsors
+### Fichier d'environnement
+```bash
+cp .env.example .env  # sous Windows copier manuellement si nécessaire
+php artisan key:generate
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Configurer la base (ex. SQLite) :
+```bash
+touch database/database.sqlite
+php artisan migrate --seed
+```
 
-### Premium Partners
+### Lancer les serveurs
+```bash
+php artisan serve
+npm run dev   # (ou: npm run build en production)
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+Accéder à l'application : http://localhost:8000
 
-## Contributing
+## 6. 🧰 Commandes utiles
+```bash
+php artisan migrate:fresh --seed
+php artisan tinker
+php artisan route:list
+php artisan cache:clear
+php artisan config:clear
+npm run build
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## 7. 📝 Flux de travail : Création & Édition
+1. Aller sur /audits/create.
+2. Sélectionner un établissement + date.
+3. Ajouter un ou plusieurs fonctionnaires via la liste déroulante.
+4. Saisir les compteurs (nb_detenus, nb_edited_fingerprints, etc.).
+5. Sauvegarder.
+6. En édition (/audits/{id}/edit), les fonctionnaires déjà liés sont préchargés.
 
-## Code of Conduct
+## 8. 👥 Sélecteur multi-fonctionnaires (Alpine.js)
+Le composant vit dans `resources/views/user/audits/form.blade.php`.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Principe :
+- Les fonctionnaires sélectionnés sont conservés dans `fonctionnaires` (tableau d'objets `{id, name}`).
+- À chaque ajout, un `<input type="hidden" name="fonctionnaires[]" value="ID">` est injecté pour l'envoi au serveur.
+- En mode édition, `$selectedFonctionnaires` est injecté en JSON dans `x-data` puis normalisé dans `init()`. 
 
-## Security Vulnerabilities
+Extrait clé :
+```html
+<div x-data='fonctionnairesSelector(@json($selectedFonctionnaires ?? []))' x-init="init()">
+	<!-- select + liste -->
+</div>
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Si les noms ne s'affichent pas en édition :
+1. Vérifier la console pour `Existing fonctionnaires raw:`.
+2. Contrôler le JSON rendu dans le HTML (View Source).
+3. Confirmer que la relation pivot contient bien les liens.
 
-## License
+## 9. 📤 Export & Filtrage
+Vue : `user/audits/export-form.blade.php`.
+Filtres disponibles : établissement + intervalle de dates.
+Export Excel via `AuditExport` (Maatwebsite\Excel).
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## 10. 🗄️ Structure des tables (résumé)
+```
+audits: id, user_id, etab_id, date_audit, nb_detenus, nb_edited_fingerprints, nb_verified_fingerprints, nb_without_fingerprints, timestamps
+fonctionnaires: id, full_name, phone, matricule, is_deleted, timestamps
+audit_fonctionnaire: audit_id, fonctionnaire_id
+users: id, name, email, password, role, timestamps
+```
+
+## 11. 🐞 Dépannage
+| Problème | Cause probable | Solution |
+|----------|----------------|----------|
+| Les fonctionnaires ne se chargent pas en édition | JSON mal sérialisé ou vide | Vérifier `$selectedFonctionnaires` dans le contrôleur (`edit()`). |
+| Aucune sélection n'est ajoutée | `addFonctionnaire()` non déclenché | Vérifier `@change="addFonctionnaire()"` et absence d'erreur JS. |
+| Erreur 419 CSRF | Session expirée | Recharger la page / vérifier balise `@csrf`. |
+| Assets manquants (vite manifest) | Build non exécuté | Lancer `npm run dev` ou `npm run build`. |
+| Données perdues après erreur | Validation redirige | Vérifier `old()` dans les champs, messages d'erreur. |
+
+## 12. 🚧 Roadmap / Améliorations futures
+- Validation front (limiter duplications visuelle immédiate).
+- Pagination / recherche des audits.
+- Soft-delete / restauration des fonctionnaires.
+- Tests (Pest) pour : création audit, édition avec mise à jour pivot, export filtré.
+- Optimisation performance (eager loading ciblé, index DB sur foreign keys).
+- Refactor composant Alpine vers un composant Blade + module JS dédié.
+
+---
+### Licence
+Projet interne basé sur Laravel (MIT). Adapter selon politique interne si nécessaire.
+
+### Contact
+Ajouter les points de contact internes ici (email / Slack / etc.).
+
+---
+> Ce fichier README remplace la documentation Laravel générique afin de refléter l'état réel du projet et ses besoins spécifiques.

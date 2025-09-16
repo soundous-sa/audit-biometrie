@@ -25,17 +25,17 @@
 
     {{-- Fonctionnaires --}}
     <div
-        x-data="fonctionnairesSelector({!! json_encode($selectedFonctionnaires ?? []) !!})"
+        x-data='fonctionnairesSelector(@json($selectedFonctionnaires ?? []))'
         x-init="init()"
         class="space-y-4">
 
         <div>
-            <label class="block text-gray-700 font-semibold mb-2">الموظفون القائمون بالبصمة</label>
-            <select x-model="selectedFonct" @change="addFonctionnaire()"
+            <label for="fonctionnaire_select" class="block text-gray-700 font-semibold mb-2">الموظفون القائمون بالبصمة</label>
+            <select id="fonctionnaire_select" x-ref="fonctSelect" x-model="selectedFonct" @change="addFonctionnaire()"
                 class="w-full border rounded px-3 py-2">
                 <option value="">-- اختر الموظف --</option>
                 @foreach($fonctionnaires as $fonct)
-                <option value="{{ $fonct->id }}">{{ $fonct->full_name }}</option>
+                <option value="{{ $fonct->id }}" data-name="{{ $fonct->full_name }}">{{ $fonct->full_name }}</option>
                 @endforeach
             </select>
         </div>
@@ -92,41 +92,55 @@
         return {
             selectedFonct: '',
             fonctionnaires: [],
-            
-            init() {                
-                // More robust initialization
-                if (Array.isArray(existingFonct)) {
-                    this.fonctionnaires = existingFonct.map(f => ({
-                        id: f.id,
-                        name: f.full_name
-                    }));
+
+            init() {
+                // Normalize any incoming structure (array, keyed object, null)
+                let data = existingFonct;
+                if (!Array.isArray(data)) {
+                    if (data && typeof data === 'object') {
+                        data = Object.keys(data)
+                            .filter(k => /^\d+$/.test(k))
+                            .map(k => data[k]);
+                    } else {
+                        data = [];
+                    }
                 }
+                this.fonctionnaires = data
+                    .filter(f => f && typeof f === 'object')
+                    .map(f => {
+                        const name = f.full_name || f.name || (f.firstName && f.lastName ? `${f.firstName} ${f.lastName}` : null) || f.firstName || f.lastName || f.matricule || '—';
+                        return { id: f.id, name };
+                    });
+                // Debug: show incoming + processed data (remove after confirmation)
+                console.log('Existing fonctionnaires raw:', data);
+                console.log('Initial fonctionnaires mapped:', JSON.parse(JSON.stringify(this.fonctionnaires)));
             },
-            
+
             addFonctionnaire() {
                 if (this.selectedFonct === '') return;
-                
-                // Check if already selected
+
+                // Prevent duplicates
                 if (this.fonctionnaires.find(f => f.id == this.selectedFonct)) {
                     this.selectedFonct = '';
                     return;
                 }
-                
-                // Find the option element and get its text
-                let option = document.querySelector(`select option[value='${this.selectedFonct}']`);
+
+                // Only search within the fonctionnaires select
+                let option = this.$refs.fonctSelect?.querySelector(`option[value='${this.selectedFonct}']`);
                 if (option) {
-                    this.fonctionnaires.push({
-                        id: this.selectedFonct,
-                        name: option.text.trim()
-                    });
+                    const name = option.dataset.name ? option.dataset.name.trim() : option.text.trim();
+                    this.fonctionnaires.push({ id: this.selectedFonct, name });
                 }
-                
                 this.selectedFonct = '';
+                // Debug (uncomment if needed):
+                // console.log('After add:', JSON.parse(JSON.stringify(this.fonctionnaires)));
             },
-            
+
             removeFonctionnaire(index) {
                 this.fonctionnaires.splice(index, 1);
+                // Debug (uncomment if needed):
+                // console.log('After remove:', JSON.parse(JSON.stringify(this.fonctionnaires)));
             }
-        }
+        };
     }
 </script>
