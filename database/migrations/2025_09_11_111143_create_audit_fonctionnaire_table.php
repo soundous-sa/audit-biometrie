@@ -14,9 +14,10 @@ return new class extends Migration
         
         Schema::create('audit_fonctionnaire', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('audit_id')->constrained();
-            $table->foreignId('fonctionnaire_id')->constrained();
+            $table->foreignId('audit_id')->constrained('audits')->cascadeOnDelete();
+            $table->foreignId('fonctionnaire_id')->constrained('fonctionnaires')->cascadeOnDelete();
             $table->timestamps();
+            $table->unique(['audit_id','fonctionnaire_id']);
         });
     }
 

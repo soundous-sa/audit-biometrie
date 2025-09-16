@@ -16,7 +16,7 @@ class Audit extends Model
     // Champs remplissables
     protected $fillable = [
         'etab_id',
-        'fonct_id',
+        'user_id',
         'date_audit',
         'nb_detenus',
         'nb_edited_fingerprints',
@@ -28,9 +28,10 @@ class Audit extends Model
         return $this->belongsTo(Etablissements::class, 'etab_id');
     }
 
-    public function fonctionnaire()
+    // User who created the audit
+    public function user()
     {
-        return $this->belongsTo(Fonctionnaire::class, 'fonct_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
     
     // relation Many-to-Many

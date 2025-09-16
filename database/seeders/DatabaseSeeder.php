@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use Database\Seeders\AdminUserSeeder;
+use Database\Seeders\UserSeeder;
 use Database\Seeders\EtablissementsSeeder; 
 use Illuminate\Database\Seeder;
 
@@ -13,14 +15,21 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Exemple : création d'un utilisateur test
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        // Ensure base test user exists (idempotent)
+        User::firstOrCreate(
+            ['email' => 'test@example.com'],
+            [
+                'name' => 'Test User',
+                'password' => bcrypt('password'),
+                'role' => 'user'
+            ]
+        );
+
+        // Run other seeders
+        $this->call([
+            AdminUserSeeder::class,
+            UserSeeder::class,
+            EtablissementsSeeder::class,
         ]);
-
-
-        // Appeler  le seeder d'Etablissements
-        $this->call(EtablissementsSeeder::class);
     }
 }

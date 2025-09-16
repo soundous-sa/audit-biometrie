@@ -18,7 +18,7 @@ class AuditController extends Controller
     // Afficher la liste des audits
     public function index()
     {
-        $audits = Audit::with(['etablissement', 'fonctionnaire'])->get();
+    $audits = Audit::with(['etablissement', 'fonctionnaires'])->get();
         return view('user.audits.index', compact('audits'));
     }
 
@@ -44,7 +44,7 @@ class AuditController extends Controller
     {
         $etablissements = Etablissements::all();
 
-        $query =  Audit::with(['etablissement', 'fonctionnaire']);
+    $query =  Audit::with(['etablissement', 'fonctionnaires']);
 
         if ($request->etab_id) {
             $query->where('etab_id', $request->etab_id);
@@ -91,9 +91,9 @@ class AuditController extends Controller
         $selectedFonctionnaires = $audit->fonctionnaires->map(function ($f) {
             return [
                 'id' => $f->id,
-                'full_name' => $f->full_name
+                'full_name' => $f->full_name,
             ];
-        });
+        })->values()->toArray();
 
         return view('user.audits.edit', compact('audit', 'etablissements', 'fonctionnaires', 'selectedFonctionnaires'));
     }
