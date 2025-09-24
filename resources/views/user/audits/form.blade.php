@@ -84,6 +84,20 @@
             class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
             required>
     </div>
+    {{-- نوع الاستجابة --}}
+<div class="mb-4">
+    <label for="response_type_id" class="block text-gray-700 font-semibold mb-2">نوع الاستجابة</label>
+    <select name="response_type_id" id="response_type_id"
+        class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-300  mb-4">
+        <option value="">-- اختر --</option>
+        @foreach($responseTypes as $type)
+    <option value="{{ $type->id }}"
+        {{ old('response_type_id', $audit->response_type_id ?? '') == $type->id ? 'selected' : '' }}>
+        {{ $type->name }}
+    </option>
+@endforeach
+    </select>
+</div>
 </div>
 
 {{-- Script Alpine.js --}}

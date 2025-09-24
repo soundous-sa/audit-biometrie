@@ -16,11 +16,11 @@ class Audit extends Model
     // Champs remplissables
     protected $fillable = [
         'etab_id',
-        'user_id',
         'date_audit',
         'nb_detenus',
         'nb_edited_fingerprints',
         'nb_verified_fingerprints',
+        'response_type_id',
         'nb_without_fingerprints',
     ];
      public function etablissement()
@@ -28,11 +28,6 @@ class Audit extends Model
         return $this->belongsTo(Etablissements::class, 'etab_id');
     }
 
-    // User who created the audit
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'user_id');
-    }
     
     // relation Many-to-Many
     public function fonctionnaires()
@@ -44,4 +39,8 @@ class Audit extends Model
             //'fonctionnaire_id'       // clé étrangère cible dans la pivot
         )->withTimestamps();
     }
+    public function responseType()
+{
+    return $this->belongsTo(ResponseType::class);
+}
 }

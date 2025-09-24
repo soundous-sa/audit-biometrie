@@ -9,7 +9,13 @@ use App\Models\Etablissements;
 use App\Models\Fonctionnaire;
 use App\Exports\AuditExport;
 use Maatwebsite\Excel\Facades\Excel;
-
+use App\Models\ResponseType;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Dompdf\Dompdf;
+use Dompdf\FontMetrics;
+use Dompdf\Options;
+use I18N_Arabic;
+use Mpdf\Mpdf;
 
 
 class AuditController extends Controller
@@ -18,7 +24,7 @@ class AuditController extends Controller
     // Afficher la liste des audits
     public function index()
     {
-    $audits = Audit::with(['etablissement', 'fonctionnaires'])->get();
+        $audits = Audit::with(['etablissement', 'fonctionnaires'])->get();
         return view('user.audits.index', compact('audits'));
     }
 
@@ -31,7 +37,7 @@ class AuditController extends Controller
         return view('dashboard', compact('audits'));
     }
 
-
+     
     // Affichage du formulaire de filtre
     public function showExportForm()
     {
@@ -44,7 +50,7 @@ class AuditController extends Controller
     {
         $etablissements = Etablissements::all();
 
-    $query =  Audit::with(['etablissement', 'fonctionnaires']);
+        $query =  Audit::with(['etablissement', 'fonctionnaires']);
 
         if ($request->etab_id) {
             $query->where('etab_id', $request->etab_id);
@@ -75,7 +81,8 @@ class AuditController extends Controller
     {
         $fonctionnaires = Fonctionnaire::where('is_deleted', false)->get();;
         $etablissements = Etablissements::all();
-        return view('user.audits.create', compact('etablissements', 'fonctionnaires'));
+        $responseTypes = \App\Models\ResponseType::all();
+        return view('user.audits.create', compact('responseTypes', 'etablissements', 'fonctionnaires'));
     }
 
 
@@ -94,8 +101,9 @@ class AuditController extends Controller
                 'full_name' => $f->full_name,
             ];
         })->values()->toArray();
+        $responseTypes = \App\Models\ResponseType::all();
 
-        return view('user.audits.edit', compact('audit', 'etablissements', 'fonctionnaires', 'selectedFonctionnaires'));
+        return view('user.audits.edit', compact('audit', 'responseTypes', 'etablissements', 'fonctionnaires', 'selectedFonctionnaires'));
     }
 
 
@@ -124,7 +132,11 @@ class AuditController extends Controller
             'nb_verified_fingerprints' => $request->nb_verified_fingerprints,
             'nb_without_fingerprints' => $request->nb_without_fingerprints,
         ]);
+        $validated = $request->validate([
+            'response_type_id' => 'nullable|exists:response_types,id',
+        ]);
 
+        $audit->update($validated);
         // Mettre à jour les fonctionnaires liés
         $audit->fonctionnaires()->sync($request->fonctionnaires ?? []);
 
@@ -145,21 +157,46 @@ class AuditController extends Controller
             'nb_edited_fingerprints' => 'required|integer|min:0',
             'nb_verified_fingerprints' => 'required|integer|min:0',
             'nb_without_fingerprints' => 'required|integer|min:0',
+            'response_type_id' => 'nullable|exists:response_types,id',
         ]);
 
+
         $audit = Audit::create([
-            'user_id' => Auth::id(),
+
             'etab_id' => $request->etab_id,
             'date_audit' => $request->date_audit,
             'nb_detenus' => $request->nb_detenus,
             'nb_edited_fingerprints' => $request->nb_edited_fingerprints,
             'nb_verified_fingerprints' => $request->nb_verified_fingerprints,
             'nb_without_fingerprints' => $request->nb_without_fingerprints,
+            'response_type_id' => $request->response_type_id,
         ]);
 
         // Associer les fonctionnaires via la table pivot
-        $audit->fonctionnaires()->sync($request->fonctionnaires);
+        $audit->fonctionnaires()->sync($request->fonctionnaires ?? []);
 
         return redirect()->route('audits.index')->with('success', 'تمت إضافة عملية التحيين بنجاح');
     }
+
+
+
+    // Générer et télécharger le PDF d'un audit
+   public function generatePdf($id)
+{
+    $audit = Audit::findOrFail($id);
+
+    $mpdf = new Mpdf([
+        'mode' => 'utf-8',
+        'format' => 'A4',
+        'default_font' => 'Amiri',
+        'margin_left' => 10,
+        'margin_right' => 10,
+    ]);
+
+    $html = view('user.audits.pdf', compact('audit'))->render();
+
+    $mpdf->WriteHTML($html);
+    return $mpdf->Output('audit_'.$audit->id.'.pdf', 'D');
+}
+
 }
