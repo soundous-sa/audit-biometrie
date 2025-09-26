@@ -122,7 +122,8 @@
                 this.fonctionnaires = data
                     .filter(f => f && typeof f === 'object')
                     .map(f => {
-                        const name = f.full_name || f.name || (f.firstName && f.lastName ? `${f.firstName} ${f.lastName}` : null) || f.firstName || f.lastName || f.matricule || '—';
+                        // Prefer full_name, then name, then matricule
+                        const name = f.full_name || f.name || f.matricule || '—';
                         return { id: f.id, name };
                     });
                 // Debug: show incoming + processed data (remove after confirmation)

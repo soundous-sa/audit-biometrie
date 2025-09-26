@@ -73,6 +73,7 @@ Route::middleware(['auth', 'user'])->prefix('audits')->group(function () {
     Route::get('/audits/export-form', [AuditController::class, 'showExportForm'])->name('audits.exportForm');
     Route::post('/audits/export-form', [AuditController::class, 'filter'])->name('audits.filter');
     Route::get('/audits/export', [AuditController::class, 'export'])->name('audits.export');
+    Route::get('/audits/{id}/word', [AuditController::class, 'generateWordFromTemplate'])->name('audits.word');
     Route::get('/audits/{id}/pdf', [AuditController::class, 'generatePdf'])->name('audits.pdf');
 
 });

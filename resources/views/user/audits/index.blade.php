@@ -56,14 +56,33 @@
                             </svg>
                         </a>
 
-                        {{-- Print icon --}}
-                        <a href="{{ route('audits.pdf', $audit->id) }}"
-                            class="flex items-center justify-center bg-blue-500 hover:bg-blue-700 text-white font-semibold rounded-md p-2 w-10 h-10"
-                            title="طباعة">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M6 9V2h12v7h2a2 2 0 0 1 2 2v7h-4v4H6v-4H2v-7a2 2 0 0 1 2-2h2zm2-5v5h8V4H8zm0 13v3h8v-3H8z" />
-                            </svg>
-                        </a>
+                        {{-- Print button with dropdown --}}
+                        <div class="relative inline-block text-left">
+                            <button type="button"
+                                class="flex items-center justify-center bg-blue-500 hover:bg-blue-700 text-white font-semibold rounded-md p-2 w-10 h-10 focus:outline-none toggle-menu"
+                                data-id="{{ $audit->id }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M6 9V2h12v7h2a2 2 0 0 1 2 2v7h-4v4H6v-4H2v-7a2 2 0 0 1 2-2h2zm2-5v5h8V4H8zm0 13v3h8v-3H8z" />
+                                </svg>
+                            </button>
+
+                            <!-- Dropdown menu -->
+                            <div class="hidden absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 z-50"
+                                id="dropdown-menu-{{ $audit->id }}">
+                                <div class="py-1">
+                                    <a href="{{ route('audits.pdf', $audit->id) }}" target="_blank"
+                                        class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                          PDF
+                                    </a>
+                                    <a href="{{ route('audits.word', $audit->id) }}" target="_blank"
+                                        class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        Word
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+
                     </td>
 
                 </tr>
@@ -72,6 +91,28 @@
                     <td colspan="8" class="text-center py-3 text-gray-500">لا توجد عمليات تحيين</td>
                 </tr>
                 @endforelse
+                <script>
+                    document.addEventListener('click', function(e) {
+                        // button clicked
+                        if (e.target.closest('.toggle-menu')) {
+                            const btn = e.target.closest('.toggle-menu');
+                            const id = btn.getAttribute('data-id');
+                            const menu = document.getElementById('dropdown-menu-' + id);
+
+                            // close other menus
+                            document.querySelectorAll('[id^="dropdown-menu-"]').forEach(m => {
+                                if (m !== menu) m.classList.add('hidden');
+                            });
+
+                            // toggle current
+                            menu.classList.toggle('hidden');
+                        } else {
+                            // click outside → close all
+                            document.querySelectorAll('[id^="dropdown-menu-"]').forEach(m => m.classList.add('hidden'));
+                        }
+                    });
+                </script>
+
             </tbody>
         </table>
     </div>
