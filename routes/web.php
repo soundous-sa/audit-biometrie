@@ -9,15 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\AuditController;
 use App\Http\Controllers\EtablissementsController;
 
-/*
-|--------------------------------------------------------------------------
-| Routes Web
-|--------------------------------------------------------------------------
-*/
-
-// -----------------------------
 // Redirection automatique depuis "/" selon le rôle
-// -----------------------------
 Route::get('/', function () {
     return redirect()->route('dashboard');
 })->name('home');
@@ -57,9 +49,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 });
 
 
-// -----------------------------
+
 // Routes user
-// -----------------------------
+
 Route::middleware(['auth', 'user'])->prefix('audits')->group(function () {
     /* Route::get('/dashboard', function () {
         return view('dashboard');
