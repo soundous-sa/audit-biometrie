@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\AuditController;
 use App\Http\Controllers\EtablissementsController;
+use App\Http\Controllers\DashboardController;
 
 // Redirection automatique depuis "/" selon le rôle
 Route::get('/', function () {
@@ -30,7 +31,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     // ✅ Dashboard commun (admin + user)
-    Route::get('/dashboard', [AuditController::class, 'dashboard'])->name('dashboard');
+   Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+   //Route::get('/dashboard', [AuditController::class, 'dashboard'])->name('dashboard');
     Route::get('/formulaire', [EtablissementsController::class, 'create'])->name('formulaire.create');
 });
 

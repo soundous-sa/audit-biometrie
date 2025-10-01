@@ -16,6 +16,7 @@ use Dompdf\FontMetrics;
 use Dompdf\Options;
 use Mpdf\Mpdf;
 use PhpOffice\PhpWord\TemplateProcessor;
+use Carbon\Carbon;
 
 
 class AuditController extends Controller
@@ -258,6 +259,9 @@ class AuditController extends Controller
         if ($totalFingers > 0) {
             $fullFingerPercent = ($audit->nb_verified_fingerprints / $totalFingers) * 100;
         }
+
+        // **Ajouter la date d'aujourd'hui**
+        $today = Carbon::now()->format('d/m/Y'); // ou 'Y/m/d' selon préférence
 
         // Load Word template
         $templatePath = storage_path('app/templates/audit.docx');
