@@ -51,8 +51,6 @@
             <div x-show="fonctionnaires.length == 0" class="text-gray-400">لا يوجد موظفون مختارون بعد</div>
         </div>
     </div>
-
-    {{-- Autres champs --}}
     <div>
         <label for="nb_detenus" class="block text-gray-700 font-semibold mb-2">عدد المعتقلين</label>
         <input type="text" name="nb_detenus" id="nb_detenus"
@@ -60,7 +58,13 @@
             class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
             required>
     </div>
-
+    <div>
+        <label for="fix_fingerprints" class="block text-gray-700 font-semibold mb-2">عدد البصمات المستقرة</label>
+        <input type="text" name="fix_fingerprints" id="fix_fingerprints"
+            value="{{ old('fix_fingerprints', $audit->fix_fingerprints ?? '') }}"
+            class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            required>
+    </div>
     <div>
         <label for="nb_edited_fingerprints" class="block text-gray-700 font-semibold mb-2">عدد البصمات المحينة</label>
         <input type="text" name="nb_edited_fingerprints" id="nb_edited_fingerprints"
@@ -84,7 +88,6 @@
             class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
             required>
     </div>
-    {{-- نوع الاستجابة --}}
 <div class="mb-4">
     <label for="response_type_id" class="block text-gray-700 font-semibold mb-2">نوع الاستجابة</label>
     <select name="response_type_id" id="response_type_id"

@@ -16,6 +16,6 @@ class Etablissements extends Model
         'libelle',
     ];
 
-    // Si tu veux, tu peux désactiver les timestamps si ta table n'a pas created_at / updated_at
+
     public $timestamps = false;
 }

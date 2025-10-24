@@ -19,10 +19,12 @@
                     <th class="py-2 px-4 border">الموظف</th>
                     <th class="py-2 px-4 border">التاريخ</th>
                     <th class="py-2 px-4 border">عدد المعتقلين</th>
+                    <th class="py-2 px-4 border"> عدد البصمات المستقرة </th>
                     <th class="py-2 px-4 border">عدد البصمات المحينة</th>
                     <th class="py-2 px-4 border">محينة ب 10 أصابع</th>
                     <th class="py-2 px-4 border">عينة دون بصمات</th>
                     <th class="py-2 px-4 border">نوع الاستجابة</th>
+                    
                     <th class="py-2 px-4 border"></th>
                 </tr>
             </thead>
@@ -42,10 +44,13 @@
 
                     <td class="py-2 px-4 border">{{ $audit->date_audit }}</td>
                     <td class="py-2 px-4 border">{{ $audit->nb_detenus }}</td>
+                    <td class="py-2 px-4 border">{{ $audit->fix_fingerprints ?? '-' }}</td>
                     <td class="py-2 px-4 border">{{ $audit->nb_edited_fingerprints }}</td>
                     <td class="py-2 px-4 border">{{ $audit->nb_verified_fingerprints }}</td>
                     <td class="py-2 px-4 border">{{ $audit->nb_without_fingerprints }}</td>
                     <td class="py-2 px-4 border">{{ $audit->responseType?->name ?? '—' }}</td>
+                   
+
                     <td class="py-2 px-4 flex justify-center gap-2">
                         {{-- Edit icon --}}
                         <a href="{{ route('audits.edit', $audit->id) }}"

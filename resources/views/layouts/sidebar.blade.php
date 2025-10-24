@@ -43,10 +43,11 @@
         <span x-show="open" class="mr-3">الموظفين</span>
       </a>
       @endif
-      @if(Auth::user()->role === 'user')
+      {{-- Liens communs user + admin --}}
+      @if(in_array(Auth::user()->role, ['user', 'admin']))
       <a href="{{ route('audits.create') }}" class="flex items-center px-4 py-3 rounded-lg hover:bg-blue-800 transition">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a4 4 0 00-4-4h-1m-6 6H6v-2a4 4 0 014-4h0a4 4 0 014 4v2zM9 11a4 4 0 100-8 4 4 0 000 8zM17 11a4 4 0 100-8 4 4 0 000 8z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
         </svg>
         <span x-show="open" class="mr-3">اضافة تحيين</span>
       </a>
@@ -57,13 +58,13 @@
         </svg>
         <span x-show="open" class="mr-3">لائحة عمليات التحيين</span>
       </a>
-     <a href="{{ route('audits.exportForm') }}" class="flex items-center px-4 py-3 rounded-lg hover:bg-blue-800 transition">
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-              d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2m-4 0H10m0 0v4h4v-4m-4 0h4" />
-    </svg>
-    <span x-show="open" class="mr-3">طباعة</span>
-</a>
+      <a href="{{ route('audits.exportForm') }}" class="flex items-center px-4 py-3 rounded-lg hover:bg-blue-800 transition">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2m-4 0H10m0 0v4h4v-4m-4 0h4" />
+        </svg>
+        <span x-show="open" class="mr-3">طباعة</span>
+      </a>
 
 
       @endif

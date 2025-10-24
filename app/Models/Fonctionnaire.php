@@ -14,7 +14,7 @@ class Fonctionnaire extends Model
         'phone',
         'matricule'
     ];
-    // Simple accessor (in case something expects $f->full_name)
+    // Simple accessor 
     public function getFullNameAttribute($value)
     {
         return $value ?? '';

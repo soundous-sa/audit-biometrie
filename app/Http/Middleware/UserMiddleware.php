@@ -8,16 +8,17 @@ use Symfony\Component\HttpFoundation\Response;
 
 class UserMiddleware
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
-     */
-    public function handle(Request $request, Closure $next): Response
+     public function handle(Request $request, Closure $next): Response
     {
-        if (auth()->check() && auth()->user()->role === 'user') {
+        if (!auth()->check()) {
+            return redirect('login');
+        }
+
+        // Autoriser les utilisateurs ET les admins
+        if (in_array(auth()->user()->role, ['user', 'admin'])) {
             return $next($request);
         }
-       // return redirect('/admin/dashboard'); // empêche l’accès si ce n’est pas un user
+
+        abort(403, 'غير مسموح لك بالدخول');
     }
 }

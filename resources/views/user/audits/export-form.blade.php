@@ -25,7 +25,6 @@
                 <input type="date" name="to_date" value="{{ request('to_date') }}" class="w-full border rounded px-3 py-2">
             </div>
         </div>
-
         <div class="mt-4 flex gap-2">
             <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">عرض النتائج</button>
 
@@ -51,6 +50,7 @@
                 <th class="py-2 px-4 border">الموظف</th>
                 <th class="py-2 px-4 border">التاريخ</th>
                 <th class="py-2 px-4 border">عدد المعتقلين</th>
+                <th class="py-2 px-4 border"> عدد البصمات المستقرة </th>
                 <th class="py-2 px-4 border">عدد البصمات المحينة</th>
                 <th class="py-2 px-4 border">محينة ب 10 أصابع</th>
                 <th class="py-2 px-4 border">عينة دون بصمات</th>
@@ -70,6 +70,7 @@
                 </td>
                 <td class="py-2 px-4 border">{{ $audit->date_audit }}</td>
                 <td class="py-2 px-4 border">{{ $audit->nb_detenus }}</td>
+                <td class="py-2 px-4 border">{{ $audit->fix_fingerprints }}</td>
                 <td class="py-2 px-4 border">{{ $audit->nb_edited_fingerprints }}</td>
                 <td class="py-2 px-4 border">{{ $audit->nb_verified_fingerprints }}</td>
                 <td class="py-2 px-4 border">{{ $audit->nb_without_fingerprints }}</td>

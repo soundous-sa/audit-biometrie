@@ -12,14 +12,6 @@
             /* top right bottom left */
         }
 
-        /* إضافة خط عربي 
-        @font-face {
-            font-family: 'Amiri';
-            src: url("{{ public_path('fonts/Amiri-Regular.ttf') }}") format('truetype');
-            font-weight: normal;
-            font-style: normal;
-        }*/
-
         html,
         body {
             font-family: 'amiri', 'DejaVu Sans', sans-serif;
@@ -157,7 +149,7 @@
 
             <!-- Left column: city & date -->
             <td style="text-align:center; width: 32%; padding: 0; vertical-align:top;">
-                <div style="font-size: 12px;">الرباط في :</div>
+               <div style="font-size: 12px;">الرباط في : {{ now()->locale('ar')->translatedFormat('d F Y') }}</div>
             </td>
         </tr>
     </table>
@@ -183,7 +175,7 @@
             سلام تام بوجود مولانا الإمام دام له العز والتمكين،
         </p>
 
-        <!-- Main paragraphs (استعمال متغيرات من الموديل audit) -->
+        <!-- Main paragraphs  -->
         <p>
             وبعد، في إطار تتبع عملية إدراج المعطيات البيومترية بالنظام المعلوماتي ، تبين أن نسبة المعتقلين الذين تم تؤخذ لهم اقل من 10 اصابع بمؤسستكم يتعدى بكثير المعدل الوطني, ومن اجل الوقوف على هده الحالة تم ايفاد عنصر من قسم نضم المعلوميات بتاريخ {{ $dateAudit }} من اجل اخد بصمات هؤلاء المعتقلين وكانت النتيجة كالاتي:
         </p>
@@ -197,8 +189,8 @@
             @if($audit->nb_edited_fingerprints > 0)
             <li>{{ $audit->nb_edited_fingerprints }} معتقلين ارتفع عدد الاصابع الماخودة لبصماتهم عن السابق بالرغم من انه لم يصل الى 10 اصابع.</li>
             @endif
-            @if($settled > 0)
-            <li>{{ $settled }} معتقلين استقرت وضعية بصماتهم.</li>
+            @if($fix_fingerprints > 0)
+            <li>{{ $fix_fingerprints }} معتقلين استقرت وضعية بصماتهم.</li>
             @endif
             @if($audit->nb_without_fingerprints > 0)
             <li>{{ $audit->nb_without_fingerprints }} معتقلين تمت معاينتهم عينيا دون اللجوء الى لاخد بصماتهم (بتر, إعاقة,تشوه ...).</li>

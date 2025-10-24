@@ -5,6 +5,6 @@
 
     <form action="{{ route('admin.admin.fonctionnaires.update', $fonctionnaire) }}" method="POST">
         @method('PUT')
-        @include('admin._form')  <!--@include('fonctionnaires._form')-->
+        @include('admin._form')  
     </form>
 @endsection

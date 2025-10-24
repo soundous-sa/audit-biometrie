@@ -10,26 +10,20 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-    /**
-     * عرض جميع المستخدمين
-     */
+    
     public function index()
     {
         $users = User::orderBy('id', 'desc')->paginate(10);
         return view('users.index', compact('users'));
     }
 
-    /**
-     * صفحة إنشاء مستخدم جديد
-     */
+    
     public function create()
     {
         return view('users.create');
     }
 
-    /**
-     * حفظ مستخدم جديد
-     */
+    
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -49,17 +43,13 @@ class UserController extends Controller
         return redirect()->route('users.index')->with('success', 'تمت إضافة المستخدم بنجاح');
     }
 
-    /**
-     * صفحة تعديل مستخدم
-     */
+    
     public function edit(User $user)
     {
         return view('users.edit', compact('user'));
     }
 
-    /**
-     * تحديث بيانات المستخدم
-     */
+    
     public function update(Request $request, User $user)
     {
         $validated = $request->validate([
@@ -82,13 +72,10 @@ class UserController extends Controller
         return redirect()->route('users.index')->with('success', 'تم تحديث المستخدم بنجاح');
     }
 
-    /**
-     * حذف مستخدم
-     */
     public function destroy(User $user)
     {
        
-// ممنوع تحذف نفسك
+
 if (Auth::id() === $user->id) {
     return redirect()->route('users.index')
         ->with('error', 'Vous ne pouvez pas supprimer votre propre compte.');
